@@ -1,26 +1,20 @@
-id: Directory Content logs
+id: elmah-partnerportal
 info:
-  name: Search for log.txt
+  name: Find partnerportal elmah.axd
   author: Clark
   severity: medium
-
 requests:
   - method: GET
     path:
-       - "{{BaseURL}}/log/log.txt"
-
+      - "{{BaseURL}}/MX/partnerportal/elmah.axd"
+    
     matchers-condition: and
     matchers:
-
       - type: word
         words:
-          - log
+          - ELMAH
+        condition: and
 
       - type: status
         status:
           - 200
-          
-      - type: word
-        words:
-          - 'text/plain'
-        part: header

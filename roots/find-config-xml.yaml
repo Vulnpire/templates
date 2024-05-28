@@ -1,20 +1,20 @@
-id: Cloudify login Exposed (Try default creds)
+id: find-config-xml
 info:
-  name: Cloudify login
+  name: Search for config.xml
   author: Clark
   severity: medium
 
 requests:
   - method: GET
     path:
-       - "{{BaseURL}}/console/login"
+      - "{{BaseURL}}/debug/config.xml"
 
     matchers-condition: and
     matchers:
 
       - type: word
         words:
-         - "Cloudify Console"
+          - appSettings
 
       - type: status
         status:

@@ -1,4 +1,4 @@
-id: IBM friendly path exposure
+id: ibm-su-exposure
 info:
   name: Finds friendly path exposed, leads to user sign-up page to create backdoor user.
   author: Clark Voss

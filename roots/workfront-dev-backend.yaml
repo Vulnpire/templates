@@ -1,19 +1,21 @@
-id: elmah.axd found in partnerportal
+id: workfront-dev-backend
 info:
-  name: Find partnerportal elmah.axd
+  name: Find WorkFront Dev Backend and works for Symfony panel.
   author: Clark
   severity: medium
+
 requests:
   - method: GET
     path:
-      - "{{BaseURL}}/MX/partnerportal/elmah.axd"
-    
+     - '{{BaseURL}}/backend_dev.php/'
+     - '{{BaseURL}}/backend.php'
+
     matchers-condition: and
     matchers:
+
       - type: word
         words:
-          - ELMAH
-        condition: and
+          - 'backend_dev.php'
 
       - type: status
         status:

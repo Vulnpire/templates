@@ -1,19 +1,20 @@
-id: web.xml Exposed
+id: xloudify-login
 info:
-  name: Find web.xml found
+  name: Cloudify login
   author: Clark
   severity: medium
+
 requests:
   - method: GET
     path:
-      - "{{BaseURL}}/iw-cc/WEB-INF/web.xml"
-    
+       - "{{BaseURL}}/console/login"
+
     matchers-condition: and
     matchers:
+
       - type: word
         words:
-          - contextConfigLocation
-        condition: and
+         - "Cloudify Console"
 
       - type: status
         status:

@@ -1,19 +1,18 @@
-id: Find adminer dashboard
+id: find-wp-config-backup
 info:
-  name: Find adminer dashboard exposed
+  name: Find wp-config backup
   author: Clark
   severity: medium
-  #Server-side Request Forgery (SSRF) Try adminer.php?server=[payload]&username=123&password=123&db=123
 requests:
   - method: GET
     path:
-      - "{{BaseURL}}/adminer.php"
-    
+      - "{{BaseURL}}/wp-config.php.bak"
+   
     matchers-condition: and
     matchers:
       - type: word
         words:
-          - Adminer
+          - dev
         condition: and
 
       - type: status

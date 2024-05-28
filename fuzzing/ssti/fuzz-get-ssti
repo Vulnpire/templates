@@ -1,0 +1,49 @@
+id: fuzz-get-ssti
+
+info:
+  name: Fuzzing SSTI
+  author: otterly
+  severity: info
+  description: Detect potential SSTI vulnerabilities in GET request parameters
+  tags: sqli,generic,error
+
+variables:
+  first: "{{rand_int(10000, 99999)}}"
+  second: "{{rand_int(10000, 99999)}}"
+  result: "{{to_number(first)*to_number(second)}}"
+
+http:
+  - raw:
+      - |
+        GET {{Path}} HTTP/1.1
+        Host: {{Hostname}}
+        Referer: {{BaseURL}}
+
+    payloads:
+      injection:
+        - '{{concat("{{", "§first§*§second§", "}}")}}'
+        - '{{concat("<%=", "§first§*§second§", "%>")}}'
+        - '{{concat("${", "§first§*§second§", "}")}}'
+        - '{{concat("${{", "§first§*§second§", "}}")}}'
+        - '{{concat("@(", "§first§*§second§", ")")}}'
+        - '{{concat("#{", "§first§*§second§", "}")}}'
+        - '{{concat("#{ ", "§first§*§second§", " }")}}'
+
+    fuzzing:
+      - part: query
+        type: replace
+        mode: single
+        fuzz:
+          - "{{injection}}"
+
+    stop-at-first-match: true
+    matchers-condition: and
+    matchers:
+      - type: word
+        part: body
+        words:
+          - "{{result}}"
+
+      - type: status
+        status:
+          - 200

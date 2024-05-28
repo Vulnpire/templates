@@ -1,18 +1,18 @@
-id: Letter Opener Web Exposed
+id: web-xml-finder
 info:
-  name: Finds Letter Opener Web Exposed
+  name: Find web.xml found
   author: Clark
   severity: medium
 requests:
   - method: GET
     path:
-      - "{{BaseURL}}/letter_opener/"
-
+      - "{{BaseURL}}/iw-cc/WEB-INF/web.xml"
+    
     matchers-condition: and
     matchers:
       - type: word
         words:
-          - letter opener
+          - contextConfigLocation
         condition: and
 
       - type: status

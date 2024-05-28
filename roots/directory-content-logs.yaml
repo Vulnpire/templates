@@ -1,21 +1,26 @@
-id: Find ProfileService
+id: directory-content-logs
 info:
-  name: Find WSLD Profile Service exposed
+  name: Search for log.txt
   author: Clark
   severity: medium
-  
+
 requests:
   - method: GET
     path:
-      - "{{BaseURL}}/services/profileService"
-    
+       - "{{BaseURL}}/log/log.txt"
+
     matchers-condition: and
     matchers:
+
       - type: word
         words:
-          - soapenv
-        condition: and
+          - log
 
       - type: status
         status:
           - 200
+          
+      - type: word
+        words:
+          - 'text/plain'
+        part: header
